@@ -260,13 +260,9 @@ func (c *clientConn) onOpen() error {
 		return err
 	}
 
-	creater, exists := creaters["polling"]
-	if !exists {
-		return InvalidError
-	}
 
 	q := c.request.URL.Query()
-	q.Set("transport", "polling")
+// 	q.Set("transport", "polling")
 	c.request.URL.RawQuery = q.Encode()
 	if (c.options.Header != nil) {
 		c.request.Header = c.options.Header
@@ -276,7 +272,7 @@ func (c *clientConn) onOpen() error {
 	if err != nil {
 		return err
 	}
-	c.setCurrent("polling", transport)
+// 	c.setCurrent("polling", transport)
 
 	pack, err := c.getCurrent().NextReader()
 	if err != nil {
