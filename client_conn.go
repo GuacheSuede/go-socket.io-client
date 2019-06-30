@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/googollee/go-engine.io/"
+	"github.com/googollee/go-engine.io"
 	"io"
 	"net/http"
 	"net/url"
