@@ -32,7 +32,6 @@ func NewClient(uri string, opts *Options) (client *Client, err error) {
 	if err != nil {
 		return
 	}
-	url.Path = path.Join("/socket.io", url.Path)
 	url.Path = url.EscapedPath()
 	if strings.HasSuffix(url.Path, "socket.io") {
 		url.Path += "/"
