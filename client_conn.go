@@ -334,35 +334,30 @@ func (c *clientConn) onOpen() error {
 	}
 	//fmt.Println(string(p2))
 
-	if c.options.Transport == "polling" {
-		//over
-	} else if c.options.Transport == "websocket" {
-		//upgrade
-		creater, exists = creaters["websocket"]
-		if !exists {
-			return InvalidError
-		}
-
-		c.request.URL.Scheme = "ws"
-		q.Set("sid", c.id)
-		q.Set("transport", "websocket")
-		c.request.URL.RawQuery = q.Encode()
-
-		transport, err = creater.Client(c.request)
-		if err != nil {
-			return err
-		}
-		c.setUpgrading("websocket", transport)
-
-		w, err := c.getUpgrade().NextWriter(message.MessageText, parser.PING)
-		if err != nil {
-			return err
-		}
-		w.Write([]byte("probe"))
-		w.Close()
-	} else {
+	//upgrade
+	creater, exists = creaters["websocket"]
+	if !exists {
 		return InvalidError
 	}
+
+	c.request.URL.Scheme = "ws"
+	q.Set("sid", c.id)
+	q.Set("transport", "websocket")
+	c.request.URL.RawQuery = q.Encode()
+
+	transport, err = creater.Client(c.request)
+	if err != nil {
+		return err
+	}
+	c.setUpgrading("websocket", transport)
+
+	w, err := c.getUpgrade().NextWriter(message.MessageText, parser.PING)
+	if err != nil {
+		return err
+	}
+	w.Write([]byte("probe"))
+	w.Close()
+
 
 	//fmt.Println("end")
 
